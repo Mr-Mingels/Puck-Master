@@ -1,0 +1,132 @@
+.homeWrapper {
+    min-height: 100vh;
+    width: 100%;
+    color: white;
+    background: 
+    linear-gradient(90deg, rgba(153, 0, 255, 1) 0%, rgba(153, 0, 255, 0.5) 0%, rgba(153, 0, 255, 0) 1%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0) 99%, rgba(153, 0, 255, 0) 99%, rgba(153, 0, 255, 0.5) 100%, rgba(153, 0, 255, 1) 100%),
+    linear-gradient(0deg, rgba(153, 0, 255, 1) 0%, rgba(153, 0, 255, 0.5) 0%, rgba(153, 0, 255, 0) 2%, rgba(0, 0, 0, 0) 2%, rgba(0, 0, 0, 0) 98%, rgba(153, 0, 255, 0) 98%, rgba(153, 0, 255, 0.5) 100%, rgba(153, 0, 255, 1) 100%);
+    user-select: none;
+}
+
+.homeContent {
+    width: 100%;
+    padding: 100px 160px;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 132px;
+}
+
+.homeTitle {
+    font-size: 48px;
+    text-shadow: 0 0 10px #8000ff, 0 0 20px #8000ff, 0 0 30px #8000ff, 0 0 40px #8000ff;
+}
+
+.difficultyOptionsWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 52px;
+    align-items: center;
+}
+
+.selectDiffTxt {
+    font-size: 24px;
+    text-shadow: 0 0 5px #8000ff, 0 0 10px #8000ff, 0 0 15px #8000ff, 0 0 20px #8000ff;
+}
+
+.difficultyBtnsWrapper {
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.difficultyBtn {
+    cursor: pointer;
+    background-color: transparent;
+    color: white;
+    text-shadow: 0 0 5px #340068, 0 0 10px #340068, 0 0 15px #340068, 0 0 20px #340068;
+    border: 1px solid white;
+    padding: 15px;
+    width: 330px;
+    box-shadow: 0 0 5px #340068, 0 0 10px #340068, 0 0 15px #340068, 0 0 20px #340068;
+    transition: all 0.2s ease-in-out;
+}
+
+.gameInfoBtnsWrapper {
+    display: flex;
+    gap: 32px;
+}
+
+.gameInfoBtn {
+    margin-top: 37px;
+    width: 200px;
+    padding: 15px;
+    cursor: pointer;
+    background-color: transparent;
+    color: white;
+    text-shadow: 0 0 5px #340068, 0 0 10px #340068, 0 0 15px #340068, 0 0 20px #340068;
+    border: 1px solid white;
+    box-shadow: 0 0 5px #340068, 0 0 10px #340068, 0 0 15px #340068, 0 0 20px #340068;
+    transition: all 0.2s ease-in-out;
+}
+
+.difficultyBtn:hover, .gameInfoBtn:hover, .closeBtn:hover {
+    border-color: #340068;
+    text-shadow: 0 0 5px #000000, 0 0 10px #000000, 0 0 15px #000000, 0 0 20px #000000;
+    box-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 15px #ffffff, 0 0 20px #ffffff;
+}
+
+.rulesModalWrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.rulesModalContent {
+    width: 600px;
+    background-color: black;
+    padding: 48px;
+    border: 3px solid white;
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: 0 0 5px #8000ff, 0 0 10px #8000ff, 0 0 15px #8000ff, 0 0 20px #8000ff;
+    gap: 28px;
+}
+
+.rulesTitle {
+    text-shadow: 0 0 5px #8000ff, 0 0 10px #8000ff, 0 0 15px #8000ff, 0 0 20px #8000ff;
+}
+
+.rulesListWrapper {
+    list-style-type: none;
+}
+
+.rule {
+    font-size: 12px;
+    margin-top: 20px;
+    line-height: 15px;
+    text-shadow: 0 0 5px #340068, 0 0 10px #340068, 0 0 15px #340068, 0 0 20px #340068;
+}
+
+.closeBtn {
+    margin-top: 20px;
+    width: 200px;
+    padding: 15px;
+    cursor: pointer;
+    background-color: transparent;
+    color: white;
+    text-shadow: 0 0 5px #340068, 0 0 10px #340068, 0 0 15px #340068, 0 0 20px #340068;
+    border: 1px solid white;
+    box-shadow: 0 0 5px #340068, 0 0 10px #340068, 0 0 15px #340068, 0 0 20px #340068;
+    transition: all 0.2s ease-in-out;
+}
