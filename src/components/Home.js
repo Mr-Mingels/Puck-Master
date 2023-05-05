@@ -1,15 +1,39 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import '../styles/Home.css'
 
 const Home = () => {
     const [rulesOpen, setRulesOpen] = useState(false)
+    const [highScoreOpen, setHighScoreOpen] = useState(false)
 
-    const openRulesModal = () => {
-        setRulesOpen(true)
+    const navigate = useNavigate()
+
+    const toggleOpenAndCloseRulesModal = () => {
+        if (!rulesOpen) {
+            setRulesOpen(true)
+        } else {
+            setRulesOpen(false)
+        }
     }
 
-    const closeRulesModal = () => {
-        setRulesOpen(false)
+    const toggleOpenAndCloseHighScoresModal = () => {
+        if (!highScoreOpen) {
+            setHighScoreOpen(true)
+        } else {
+            setHighScoreOpen(false)
+        }
+    }
+
+    const navigateToEasyMode = () => {
+        navigate('/game/mode=easy')
+    }
+
+    const navigateToMediumMode = () => {
+        navigate('/game/mode=medium')
+    }
+
+    const navigateToHardMode = () => {
+        navigate('/game/mode=hard')
     }
     return (
         <section className="homeWrapper">
@@ -18,13 +42,13 @@ const Home = () => {
                 <div className="difficultyOptionsWrapper">
                     <h3 className="selectDiffTxt">Select Difficulty:</h3>
                     <div className="difficultyBtnsWrapper">
-                        <button className="difficultyBtn">Easy</button>
-                        <button className="difficultyBtn">Medium</button>
-                        <button className="difficultyBtn">Hard</button>
+                        <button className="difficultyBtn" onClick={() => navigateToEasyMode()}>Easy</button>
+                        <button className="difficultyBtn" onClick={() => navigateToMediumMode()}>Medium</button>
+                        <button className="difficultyBtn" onClick={() => navigateToHardMode()}>Hard</button>
                     </div>
                     <div className="gameInfoBtnsWrapper">
-                    <button className="gameInfoBtn" onClick={() => openRulesModal()}>Rules</button>
-                    <button className="gameInfoBtn">High Scores</button>
+                    <button className="gameInfoBtn" onClick={() => toggleOpenAndCloseRulesModal()}>Rules</button>
+                    <button className="gameInfoBtn" onClick={() => toggleOpenAndCloseHighScoresModal()}>High Scores</button>
                     </div>
                 </div>
             </div>
@@ -46,15 +70,23 @@ const Home = () => {
                         <li className="rule">Each game lasts until one of the players reaches 15 points. The first player to score 15 points 
                         wins the game.</li>
                     </ul>
-                    <button className="closeBtn" onClick={() => closeRulesModal()}>Close</button>
+                    <button className="closeBtn" onClick={() => toggleOpenAndCloseRulesModal()}>Close</button>
                 </div>
             </div>
             )}
+            {highScoreOpen &&(
             <div className="highScoresModalWrapper">
                 <div className="highScoresModalContent">
-                    
+                    <h2 className="highScoreTitle">High Scores</h2>
+                    <ul className="highScoreDifficultyTypeWrapper">
+                        <li className="highScoreDifficultyType">Easy:<span className="points">0 points</span></li>
+                        <li className="highScoreDifficultyType">Medium:<span className="points">0 points</span></li>
+                        <li className="highScoreDifficultyType">Hard:<span className="points">0 points</span></li>
+                    </ul>
+                    <button className="closeBtn highScoreModal" onClick={() => toggleOpenAndCloseHighScoresModal()}>Close</button>
                 </div>
             </div>
+            )}
         </section>
     )
 }

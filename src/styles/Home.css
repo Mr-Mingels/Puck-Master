@@ -78,7 +78,7 @@
     box-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 15px #ffffff, 0 0 20px #ffffff;
 }
 
-.rulesModalWrapper {
+.rulesModalWrapper, .highScoresModalWrapper {
     position: fixed;
     top: 0;
     left: 0;
@@ -90,7 +90,7 @@
     background: rgba(0, 0, 0, 0.4);
 }
 
-.rulesModalContent {
+.rulesModalContent, .highScoresModalContent {
     width: 600px;
     background-color: black;
     padding: 48px;
@@ -103,11 +103,11 @@
     gap: 28px;
 }
 
-.rulesTitle {
+.rulesTitle, .highScoreTitle {
     text-shadow: 0 0 5px #8000ff, 0 0 10px #8000ff, 0 0 15px #8000ff, 0 0 20px #8000ff;
 }
 
-.rulesListWrapper {
+.rulesListWrapper, .highScoreDifficultyTypeWrapper {
     list-style-type: none;
 }
 
@@ -129,4 +129,24 @@
     border: 1px solid white;
     box-shadow: 0 0 5px #340068, 0 0 10px #340068, 0 0 15px #340068, 0 0 20px #340068;
     transition: all 0.2s ease-in-out;
+}
+
+.highScoresModalContent {
+    width: 500px;
+}
+
+.highScoreDifficultyTypeWrapper {
+    width: 315px;
+}
+
+.highScoreDifficultyType {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    font-size: 18px;
+    text-shadow: 0 0 5px #340068, 0 0 10px #340068, 0 0 15px #340068, 0 0 20px #340068;
+}
+
+.closeBtn.highScoreModal {
+    margin-top: 30px;
 }

@@ -1,0 +1,99 @@
+.gameBoardWrapper {
+    min-height: 100vh;
+    width: 100%;
+    color: white;
+    padding: 100px 80px;
+    user-select: none;
+}
+
+.gameBoardContent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid white;
+    height: 560px;
+    box-shadow: 0 0 5px #8000ff, 0 0 10px #8000ff, 0 0 15px #8000ff, 0 0 20px #8000ff;
+    border-radius: 25px;
+    position: relative;
+}
+
+.playerBoardSide {
+    width: 50%;
+    height: 100%;
+    position: relative;
+}
+
+.playerFigure {
+    position: absolute;
+    top: 42.5%;
+    left: 10%;
+    transform: translate(-10%, -50%);
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+    border: 20px solid #2200ff;
+    background-color: #0073ff;
+    box-shadow: 0 0 5px #0044ff, 0 0 10px #0044ff, 0 0 15px #0044ff, 0 0 20px #0044ff;
+    z-index: 10;
+}
+
+.gameBoardMidLine {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 100%;
+    border: 1px solid white;
+    box-shadow: 0 0 5px #8000ff, 0 0 10px #8000ff, 0 0 15px #8000ff, 0 0 20px #8000ff;
+    z-index: 2;
+}
+
+.gameBoardMidCircle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 200px;
+    width: 200px;
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 0 5px #8000ff, 0 0 10px #8000ff, 0 0 15px #8000ff, 0 0 20px #8000ff;
+    z-index: 0;
+}
+
+.puckStart {
+    position: absolute;
+    height: 40px;
+    width: 40px;
+}
+
+.puck {
+    position: absolute;
+    border: 10px solid white;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    background-color: rgb(221, 221, 221);
+    box-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 15px #ffffff, 0 0 20px #ffffff;
+    z-index: 10;
+}
+
+.computerBoardSide {
+    width: 50%;
+    height: 100%;
+    position: relative;
+}
+
+.computerFigure {
+    position: absolute;
+    top: 50%;
+    right: 10%;
+    transform: translatey(-50%);
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+    border: 20px solid #ff0000;
+    background-color: #550000;
+    box-shadow: 0 0 5px #ff5e5e, 0 0 10px #ff5e5e, 0 0 15px #ff5e5e, 0 0 20px #ff5e5e;
+    z-index: 10;
+}
