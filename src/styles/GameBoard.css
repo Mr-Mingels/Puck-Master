@@ -8,8 +8,6 @@
 
 .gameBoardContent {
     display: flex;
-    align-items: center;
-    justify-content: center;
     border: 3px solid white;
     height: 560px;
     box-shadow: 0 0 5px #8000ff, 0 0 10px #8000ff, 0 0 15px #8000ff, 0 0 20px #8000ff;
@@ -34,7 +32,7 @@
     border: 20px solid #2200ff;
     background-color: #0073ff;
     box-shadow: 0 0 5px #0044ff, 0 0 10px #0044ff, 0 0 15px #0044ff, 0 0 20px #0044ff;
-    z-index: 10;
+    z-index: 100;
 }
 
 .gameBoardMidLine {
@@ -61,21 +59,16 @@
     z-index: 0;
 }
 
-.puckStart {
-    position: absolute;
-    height: 40px;
-    width: 40px;
-}
-
 .puck {
     position: absolute;
     border: 10px solid white;
     height: 40px;
     width: 40px;
+    top: 50%;
     border-radius: 50%;
     background-color: rgb(221, 221, 221);
     box-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 15px #ffffff, 0 0 20px #ffffff;
-    z-index: 10;
+    z-index: 100;
 }
 
 .computerBoardSide {
@@ -95,5 +88,46 @@
     border: 20px solid #ff0000;
     background-color: #550000;
     box-shadow: 0 0 5px #ff5e5e, 0 0 10px #ff5e5e, 0 0 15px #ff5e5e, 0 0 20px #ff5e5e;
-    z-index: 10;
+    z-index: 100;
+}
+
+.computerGoalCircle, .playerGoalCircle {
+    position: absolute;
+    top: 50%;
+    right: 0%;
+    width: 200px;
+    height: 200px;
+    transform: translatey(-50%);
+    background-color: transparent;
+    border: 3px solid white;
+    border-radius: 200px 0 0 200px;
+    box-shadow: 0 0 5px #8000ff, 0 0 10px #8000ff, 0 0 15px #8000ff, 0 0 20px #8000ff;
+}
+
+.computerGoalPost, .playerGoalPost {
+    position: absolute;
+    top: 50%;
+    right: -0.63%;
+    width: 1px;
+    height: 200px;
+    transform: translatey(-50%);
+    background-color: transparent;
+    border: 3.2px solid #ff0000;
+    box-shadow: 0 0 15px #ff0000, 0 0 20px #ff0000;
+    z-index: 50;
+}
+
+.playerGoalCircle {
+    top: 50%;
+    left: 0;
+    transform: translate(0%, -50%);
+    border-radius: 0 200px 200px 0;
+}
+
+.playerGoalPost {
+    top: 50%;
+    left: -0.63%;
+    transform: translate(-0.63%, -50%);
+    border: 3.2px solid #0044ff;
+    box-shadow: 0 0 15px #0044ff, 0 0 20px #0044ff;
 }

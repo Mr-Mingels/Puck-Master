@@ -2,16 +2,22 @@ import React, { useState, useEffect, useRef } from "react";
 import '../styles/GameBoard.css'
 
 const GameBoard = () => {
+    const [computerPosition, setComputerPosition] = useState({ x: 0, y: 0 });
     const [playerPosition, setPlayerPosition] = useState({ x: 0, y: 0 });
-    const [puckPosition, setPuckPosition] = useState({ x: 0, y: 0 });
+    const [puckPosition, setPuckPosition] = useState({ x: 677.2, y: 276.1 });
     const [puckVelocity, setPuckVelocity] = useState({ x: 0, y: 0 });
     const [keysPressed, setKeysPressed] = useState({});
     const playerFigureRef = useRef(null);
     const playerBoardSideRef = useRef(null);
+    const computerBoardSideRef = useRef(null)
+    const computerFigureRect = useRef(null)
     const movementIntervalRef = useRef(null);
-    const step = 10;
+    const gameBoardContentRef = useRef(null);
+    const computerGoalPost = useRef(null);
+    const step = 15;
+    const computerStep = 10;
     const friction = 0.98; // Adjust this value to change the slowing down effect
-    const impactMultiplier = 1;
+    const impactMultiplier = 2;
 
     const checkCollision = (rect1, rect2) => {
         return (
@@ -21,6 +27,89 @@ const GameBoard = () => {
           rect1.y + rect1.height > rect2.y
         );
       };
+      
+
+      const updateComputerPosition = () => {
+        if (!gameBoardContentRef.current || !computerFigureRect.current) return;
+      
+        const boardRect = computerBoardSideRef.current.getBoundingClientRect();
+        const compFigureRect = computerFigureRect.current.getBoundingClientRect();
+        const puckRect = document.querySelector(".puck").getBoundingClientRect();
+      
+        const figureInitialLeft = parseFloat(getComputedStyle(computerFigureRect.current).left);
+        const figureInitialTop = parseFloat(getComputedStyle(computerFigureRect.current).top);
+      
+        const targetX = puckRect.x + puckRect.width / 2 - boardRect.x;
+        const targetY = puckRect.y + puckRect.height / 2 - boardRect.y;
+      
+        // Check if the puck is in the computer's side
+        if (checkCollision(boardRect, puckRect)) {
+          setComputerPosition((prevPosition) => {
+            const newPosition = { ...prevPosition };
+      
+            const computerThreshold = 3;
+            const computerMaxStep = 15; // Increase this value to make the computerFigure move closer to the puck
+      
+            const diffX = targetX - (newPosition.x + compFigureRect.width / 2);
+            const diffY = targetY - (newPosition.y + compFigureRect.height / 2);
+      
+            if (Math.abs(diffX) > computerThreshold) {
+              const stepX = Math.sign(diffX) * Math.min(Math.abs(diffX), computerMaxStep);
+              newPosition.x += stepX;
+            }
+      
+            if (Math.abs(diffY) > computerThreshold) {
+              const stepY = Math.sign(diffY) * Math.min(Math.abs(diffY), computerMaxStep);
+              newPosition.y += stepY;
+            }
+      
+            // Check boundaries for X-axis
+            if (newPosition.x < -figureInitialLeft) {
+              newPosition.x = -figureInitialLeft;
+            } else if (newPosition.x + compFigureRect.width > boardRect.width - figureInitialLeft) {
+              newPosition.x = boardRect.width - compFigureRect.width - figureInitialLeft;
+            }
+      
+            // Check boundaries for Y-axis
+            if (newPosition.y < -figureInitialTop) {
+              newPosition.y = -figureInitialTop;
+            } else if (newPosition.y + compFigureRect.height > boardRect.height - figureInitialTop) {
+              newPosition.y = boardRect.height - compFigureRect.height - figureInitialTop;
+            }
+      
+            // Check collision between computerFigure and puck
+            if (checkCollision(compFigureRect, puckRect)) {
+              const puckCenterX = puckRect.x + puckRect.width / 2;
+              const puckCenterY = puckRect.y + puckRect.height / 2;
+              const compCenterX = compFigureRect.x + compFigureRect.width / 2;
+              const compCenterY = compFigureRect.y + compFigureRect.height / 2;
+      
+              const impactDirectionX = Math.sign(puckCenterX - compCenterX);
+              const impactDirectionY = Math.sign(puckCenterY - compCenterY);
+      
+              setPuckVelocity((prevVelocity) => ({
+                x: prevVelocity.x + impactDirectionX * impactMultiplier,
+                y: prevVelocity.y + impactDirectionY * impactMultiplier,
+              }));
+            }
+      
+            return newPosition;
+          });
+        }
+      };
+      
+      
+      
+      
+      
+      useEffect(() => {
+        const interval = setInterval(() => {
+          updateComputerPosition();
+        }, 50); // Adjust the interval as needed (50ms in this case)
+        return () => clearInterval(interval);
+      }, []);
+      
+      
   
     useEffect(() => {
         const updatePlayerPosition = () => {
@@ -66,58 +155,103 @@ const GameBoard = () => {
               return newPosition;
             });
           };
+
+
           const updatePuckPosition = () => {
-            if (!playerBoardSideRef.current || !playerFigureRef.current) return;
-      
-            const boardRect = playerBoardSideRef.current.getBoundingClientRect();
+            if (!gameBoardContentRef.current || !playerFigureRef.current) return;
+          
+            const boardRect = gameBoardContentRef.current.getBoundingClientRect();
             const figureRect = playerFigureRef.current.getBoundingClientRect();
             const puckRect = document.querySelector(".puck").getBoundingClientRect();
-      
-            // Check if playerFigure hits the puck
-            if (checkCollision(figureRect, puckRect)) {
+            const borderWidth = 3; // Adjust this value according to the border width of gameBoardContent
+          
+            setPuckPosition((prevPuckPosition) => {
+              // Check if playerFigure hits the puck
+              if (checkCollision(figureRect, puckRect)) {
                 const deltaX = (puckRect.x + puckRect.width / 2) - (figureRect.x + figureRect.width / 2);
                 const deltaY = (puckRect.y + puckRect.height / 2) - (figureRect.y + figureRect.height / 2);
                 const angle = Math.atan2(deltaY, deltaX);
-
-      
+          
+                const offset = 3; // Adjust this value to change the minimum separation between the puck and player figure
+                prevPuckPosition.x += Math.cos(angle) * offset;
+                prevPuckPosition.y += Math.sin(angle) * offset;
+          
                 setPuckVelocity((prevVelocity) => ({
-                    x: prevVelocity.x + Math.cos(angle) * impactMultiplier,
-                    y: prevVelocity.y + Math.sin(angle) * impactMultiplier,
+                  x: prevVelocity.x + Math.cos(angle) * impactMultiplier,
+                  y: prevVelocity.y + Math.sin(angle) * impactMultiplier,
                 }));
-            }
-      
-            setPuckPosition((prevPuckPosition) => {
+              }
+          
               const newPosition = {
                 x: prevPuckPosition.x + puckVelocity.x,
                 y: prevPuckPosition.y + puckVelocity.y,
               };
-      
+          
+              if (newPosition.x < borderWidth || newPosition.x + puckRect.width > boardRect.width - borderWidth ||
+              newPosition.y < borderWidth || newPosition.y + puckRect.height > boardRect.height - borderWidth) {
+  
+              // Calculate the angle of the wall that the puck hit
+              let normalAngle = 0;
+              if (puckRect.x < borderWidth) {
+                // Left wall
+                normalAngle = 0;
+              } else if (puckRect.x + puckRect.width > boardRect.width - borderWidth) {
+                // Right wall
+                normalAngle = 0;
+              } else if (puckRect.y < borderWidth) {
+                // Top wall
+                normalAngle = 0;
+              } else if (puckRect.y + puckRect.height > boardRect.height - borderWidth) {
+                // Bottom wall
+                normalAngle = 0;
+              }
+
+              if (normalAngle !== 0) {
+                // Reflect the puck's velocity vector across the normal to the wall
+                const angle = 2 * normalAngle - Math.atan2(puckVelocity.y, puckVelocity.x);
+                const speed = Math.sqrt(puckVelocity.x * puckVelocity.x + puckVelocity.y * puckVelocity.y) * impactMultiplier;
+
+                setPuckVelocity({
+                  x: Math.cos(angle) * speed,
+                  y: Math.sin(angle) * speed,
+                });
+              } else {
+                setPuckVelocity({
+                  x: puckVelocity.x * friction,
+                  y: puckVelocity.y * friction,
+                });
+              }
+            };
+
+          
               // Check boundaries for X-axis
-              if (newPosition.x < 0) {
-                newPosition.x = 0;
+              if (newPosition.x < borderWidth) {
+                newPosition.x = borderWidth;
                 setPuckVelocity((prevVelocity) => ({ ...prevVelocity, x: -prevVelocity.x }));
-              } else if (newPosition.x + puckRect.width > boardRect.width) {
-                newPosition.x = boardRect.width - puckRect.width;
+              } else if (newPosition.x + puckRect.width > boardRect.width - borderWidth) {
+                newPosition.x = boardRect.width - puckRect.width - borderWidth;
                 setPuckVelocity((prevVelocity) => ({ ...prevVelocity, x: -prevVelocity.x }));
               }
-      
-              // Check boundaries for Y-axis
-              if (newPosition.y < 0) {
-                newPosition.y = 0;
-                setPuckVelocity((prevVelocity) => ({ ...prevVelocity, y: -prevVelocity.y }));
-              } else if (newPosition.y + puckRect.height > boardRect.height) {
-                newPosition.y = boardRect.height - puckRect.height;
-          setPuckVelocity((prevVelocity) => ({ ...prevVelocity, y: -prevVelocity.y }));
-        }
-
-        return newPosition;
-      });
           
-          setPuckVelocity((prevVelocity) => ({
-            x: prevVelocity.x * friction,
-            y: prevVelocity.y * friction,
-          }));
-        };    
+              // Check boundaries for Y-axis
+              if (newPosition.y < borderWidth) {
+                newPosition.y = borderWidth;
+                setPuckVelocity((prevVelocity) => ({ ...prevVelocity, y: -prevVelocity.y }));
+              } else if (newPosition.y + puckRect.height > boardRect.height - borderWidth) {
+                newPosition.y = boardRect.height - puckRect.height - borderWidth;
+                setPuckVelocity((prevVelocity) => ({ ...prevVelocity, y: -prevVelocity.y }));
+              }
+          
+              return newPosition;
+            });
+          
+            setPuckVelocity((prevVelocity) => ({
+              x: prevVelocity.x * friction,
+              y: prevVelocity.y * friction,
+            }));
+          };
+          
+            
 
           const update = () => {
             updatePlayerPosition();
@@ -215,25 +349,29 @@ const GameBoard = () => {
 
     return (
         <section className="gameBoardWrapper">
-            <div className="gameBoardContent">
+            <div className="gameBoardContent" ref={gameBoardContentRef}>
                 <div className="playerBoardSide" ref={playerBoardSideRef}>
                     <span className="playerFigure" ref={playerFigureRef} style={{
                     transform: `translate(${playerPosition.x}px, ${playerPosition.y}px)`,
                     }}
                     onMouseDown={handleMouseDown}
                     onTouchStart={handleMouseDown}></span>
+                    <span className="playerGoalCircle"></span>
+                    <span className="playerGoalPost"></span>
                 </div>
                     <span className="gameBoardMidLine"></span>
                     <span className="gameBoardMidCircle"></span>
-                    <div className="puckStart">
                         <span className="puck" style={{
                             left: `${puckPosition.x}px`,
                             top: `${puckPosition.y}px`,
                             }}>
                         </span>
-                    </div>
-                <div className="computerBoardSide">
-                    <span className="computerFigure"></span>
+                <div className="computerBoardSide" ref={computerBoardSideRef}>
+                    <span className="computerFigure" ref={computerFigureRect} style={{
+                    transform: `translate(${computerPosition.x}px, ${computerPosition.y}px)`,
+                    }}></span>
+                    <span className="computerGoalCircle"></span>
+                    <span className="computerGoalPost" ref={computerGoalPost}></span>
                 </div>
             </div>
         </section>
