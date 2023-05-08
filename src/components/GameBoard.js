@@ -4,20 +4,27 @@ import '../styles/GameBoard.css'
 const GameBoard = () => {
     const [computerPosition, setComputerPosition] = useState({ x: 0, y: 0 });
     const [playerPosition, setPlayerPosition] = useState({ x: 0, y: 0 });
-    const [puckPosition, setPuckPosition] = useState({ x: 677.2, y: 276.1 });
+    const [puckPosition, setPuckPosition] = useState({ x: 665, y: 257 });
     const [puckVelocity, setPuckVelocity] = useState({ x: 0, y: 0 });
     const [keysPressed, setKeysPressed] = useState({});
+    const [gameStarted, setGameStarted] = useState(false)
+    const [playerScore, setPlayerScore] = useState(0)
+    const [computerScore, setComputerScore] = useState(0)
+    const [playerScored, setPlayerScored] = useState(false)
+    const [computerScored, setComputerScored] = useState(false)
+    const [stopFigureMovement, setStopFigureMovement] = useState(false)
     const playerFigureRef = useRef(null);
     const playerBoardSideRef = useRef(null);
     const computerBoardSideRef = useRef(null)
     const computerFigureRect = useRef(null)
     const movementIntervalRef = useRef(null);
     const gameBoardContentRef = useRef(null);
-    const computerGoalPost = useRef(null);
+    const computerGoalPostRef = useRef(null);
+    const playerGoalPostRef = useRef(null)
     const step = 15;
-    const computerStep = 10;
+    const computerStep = 5;
     const friction = 0.98; // Adjust this value to change the slowing down effect
-    const impactMultiplier = 2;
+    const impactMultiplier = 3;
 
     const checkCollision = (rect1, rect2) => {
         return (
@@ -27,41 +34,46 @@ const GameBoard = () => {
           rect1.y + rect1.height > rect2.y
         );
       };
-      
+
 
       const updateComputerPosition = () => {
-        if (!gameBoardContentRef.current || !computerFigureRect.current) return;
+        if (!gameBoardContentRef.current || !computerFigureRect.current || !gameStarted) return;
       
         const boardRect = computerBoardSideRef.current.getBoundingClientRect();
         const compFigureRect = computerFigureRect.current.getBoundingClientRect();
         const puckRect = document.querySelector(".puck").getBoundingClientRect();
-      
+
         const figureInitialLeft = parseFloat(getComputedStyle(computerFigureRect.current).left);
         const figureInitialTop = parseFloat(getComputedStyle(computerFigureRect.current).top);
-      
-        const targetX = puckRect.x + puckRect.width / 2 - boardRect.x;
-        const targetY = puckRect.y + puckRect.height / 2 - boardRect.y;
-      
+
+        // Calculate the mid-point of the board
+        const midBoardX = boardRect.x + boardRect.width / 1.4;
+        const midBoardY = boardRect.y + boardRect.height / 2;
+
+        // Adjust targetX and targetY based on the mid-point of the board
+        const targetX = puckRect.x + puckRect.width / 2 - midBoardX;
+        const targetY = puckRect.y + puckRect.height / 2 - midBoardY;
+
         // Check if the puck is in the computer's side
         if (checkCollision(boardRect, puckRect)) {
           setComputerPosition((prevPosition) => {
             const newPosition = { ...prevPosition };
-      
+
             const computerThreshold = 3;
-            const computerMaxStep = 15; // Increase this value to make the computerFigure move closer to the puck
-      
+
             const diffX = targetX - (newPosition.x + compFigureRect.width / 2);
             const diffY = targetY - (newPosition.y + compFigureRect.height / 2);
-      
+
             if (Math.abs(diffX) > computerThreshold) {
-              const stepX = Math.sign(diffX) * Math.min(Math.abs(diffX), computerMaxStep);
+              const stepX = Math.sign(diffX) * Math.min(Math.abs(diffX), computerStep);
               newPosition.x += stepX;
             }
-      
+
             if (Math.abs(diffY) > computerThreshold) {
-              const stepY = Math.sign(diffY) * Math.min(Math.abs(diffY), computerMaxStep);
+              const stepY = Math.sign(diffY) * Math.min(Math.abs(diffY), computerStep);
               newPosition.y += stepY;
             }
+
       
             // Check boundaries for X-axis
             if (newPosition.x < -figureInitialLeft) {
@@ -99,31 +111,23 @@ const GameBoard = () => {
       };
       
       
-      
-      
-      
-      useEffect(() => {
-        const interval = setInterval(() => {
-          updateComputerPosition();
-        }, 50); // Adjust the interval as needed (50ms in this case)
-        return () => clearInterval(interval);
-      }, []);
-      
-      
   
     useEffect(() => {
         const updatePlayerPosition = () => {
-            if (!playerBoardSideRef.current || !playerFigureRef.current) return;
-          
+            if (!playerBoardSideRef.current || !playerFigureRef.current || stopFigureMovement) return;
+          console.log('moving')
             const boardRect = playerBoardSideRef.current.getBoundingClientRect();
             const figureRect = playerFigureRef.current.getBoundingClientRect();
             const puckRect = document.querySelector('.puck').getBoundingClientRect();
           
             const figureInitialLeft = parseFloat(getComputedStyle(playerFigureRef.current).left);
             const figureInitialTop = parseFloat(getComputedStyle(playerFigureRef.current).top);
-          
+            
             setPlayerPosition((prevPosition) => {
               const newPosition = { ...prevPosition };
+              console.log(newPosition)
+
+              
           
               if (keysPressed["w"] || keysPressed["W"]) {
                 newPosition.y -= step;
@@ -138,7 +142,7 @@ const GameBoard = () => {
                 newPosition.x += step;
               }
           
-         /*     // Check boundaries for X-axis
+              // Check boundaries for X-axis
               if (newPosition.x < -figureInitialLeft) {
                 newPosition.x = -figureInitialLeft;
               } else if (newPosition.x + figureRect.width > boardRect.width - figureInitialLeft) {
@@ -150,7 +154,7 @@ const GameBoard = () => {
                 newPosition.y = -figureInitialTop;
               } else if (newPosition.y + figureRect.height > boardRect.height - figureInitialTop) {
                 newPosition.y = boardRect.height - figureRect.height - figureInitialTop;
-              } */
+              } 
           
               return newPosition;
             });
@@ -158,12 +162,13 @@ const GameBoard = () => {
 
 
           const updatePuckPosition = () => {
-            if (!gameBoardContentRef.current || !playerFigureRef.current) return;
+            if (!gameBoardContentRef.current || !playerFigureRef.current || !gameStarted) return;
           
             const boardRect = gameBoardContentRef.current.getBoundingClientRect();
             const figureRect = playerFigureRef.current.getBoundingClientRect();
             const puckRect = document.querySelector(".puck").getBoundingClientRect();
             const borderWidth = 3; // Adjust this value according to the border width of gameBoardContent
+            
           
             setPuckPosition((prevPuckPosition) => {
               // Check if playerFigure hits the puck
@@ -172,7 +177,7 @@ const GameBoard = () => {
                 const deltaY = (puckRect.y + puckRect.height / 2) - (figureRect.y + figureRect.height / 2);
                 const angle = Math.atan2(deltaY, deltaX);
           
-                const offset = 3; // Adjust this value to change the minimum separation between the puck and player figure
+                const offset = 6; // Adjust this value to change the minimum separation between the puck and player figure
                 prevPuckPosition.x += Math.cos(angle) * offset;
                 prevPuckPosition.y += Math.sin(angle) * offset;
           
@@ -256,6 +261,8 @@ const GameBoard = () => {
           const update = () => {
             updatePlayerPosition();
             updatePuckPosition();
+            updateComputerPosition();
+            checkForGoal();
           };
       
           if (movementIntervalRef.current) {
@@ -267,7 +274,7 @@ const GameBoard = () => {
           return () => {
             clearInterval(movementIntervalRef.current);
           };
-        }, [keysPressed, puckVelocity]);
+        }, [keysPressed, puckVelocity, gameStarted, stopFigureMovement]);
   
     useEffect(() => {
       const handleKeyDown = (event) => {
@@ -293,17 +300,20 @@ const GameBoard = () => {
       };
     }, []);
   
+
     const handleMouseDown = (e) => {
-        e.preventDefault();
+      console.log(e)
         const clientX = e.clientX || (e.touches && e.touches[0].clientX);
         const clientY = e.clientY || (e.touches && e.touches[0].clientY);
         const offsetX = clientX - playerPosition.x;
         const offsetY = clientY - playerPosition.y;
+        console.log(clientX)
       
         const figureInitialLeft = parseFloat(getComputedStyle(playerFigureRef.current).left);
         const figureInitialTop = parseFloat(getComputedStyle(playerFigureRef.current).top);
       
         const handleMouseMove = (e) => {
+
 
             const clientX = e.clientX || (e.touches && e.touches[0].clientX);
             const clientY = e.clientY || (e.touches && e.touches[0].clientY);
@@ -330,6 +340,11 @@ const GameBoard = () => {
             }
           
             setPlayerPosition(newPosition);
+            const playerFigureRect = playerFigureRef.current.getBoundingClientRect();
+            const puckRect = document.querySelector(".puck").getBoundingClientRect();
+            if (checkCollision(playerFigureRect, puckRect)) {
+              setGameStarted(true)
+            }
           };
       
           const handleMouseUp = () => {
@@ -344,20 +359,62 @@ const GameBoard = () => {
           window.addEventListener("touchmove", handleMouseMove);
           window.addEventListener("touchend", handleMouseUp);
         };
+
+
+        useEffect(() => {
+          if (gameStarted) return
+          const playerFigureRect = playerFigureRef.current.getBoundingClientRect();
+          const puckRect = document.querySelector(".puck").getBoundingClientRect();
+          if (checkCollision(playerFigureRect, puckRect)) {
+            setGameStarted(true)
+          }
+        },[playerPosition])
+
           
-          
+        const checkForGoal = () => {
+          const playerGoalPostRect = playerGoalPostRef.current.getBoundingClientRect();
+          const computerGoalPostRect = computerGoalPostRef.current.getBoundingClientRect();
+          const puckRect = document.querySelector(".puck").getBoundingClientRect();
+          if (checkCollision(computerGoalPostRect, puckRect)) {
+            setPlayerPosition({ x: 0, y: 0 });
+            setComputerPosition({ x: 0, y: 0 });
+            setPuckPosition({ x: 665, y: 257 });
+            setStopFigureMovement(true)
+            setGameStarted(false)
+            setPlayerScore(playerScore + 1)
+            setPlayerScored(true)
+            setTimeout(() => {
+              setStopFigureMovement(false)
+              setPlayerScored(false)
+            }, 3000);
+          } 
+          if (checkCollision(playerGoalPostRect, puckRect)) {
+            setPlayerPosition({ x: 0, y: 0 });
+            setComputerPosition({ x: 0, y: 0 });
+            setPuckPosition({ x: 665, y: 257 });
+            setStopFigureMovement(true)
+            setGameStarted(false)
+            setComputerScore(computerScore + 1)
+            setComputerScored(true)
+            setTimeout(() => {
+              setStopFigureMovement(false)
+              setComputerScored(false)
+            }, 3000);
+            console.log('true')
+          }
+        }
 
     return (
         <section className="gameBoardWrapper">
             <div className="gameBoardContent" ref={gameBoardContentRef}>
                 <div className="playerBoardSide" ref={playerBoardSideRef}>
-                    <span className="playerFigure" ref={playerFigureRef} style={{
+                    <span className={`playerFigure ${stopFigureMovement ? 'pointer-event-off' : ''}`} ref={playerFigureRef} style={{
                     transform: `translate(${playerPosition.x}px, ${playerPosition.y}px)`,
                     }}
                     onMouseDown={handleMouseDown}
                     onTouchStart={handleMouseDown}></span>
                     <span className="playerGoalCircle"></span>
-                    <span className="playerGoalPost"></span>
+                    <span className="playerGoalPost" ref={playerGoalPostRef}></span>
                 </div>
                     <span className="gameBoardMidLine"></span>
                     <span className="gameBoardMidCircle"></span>
@@ -371,9 +428,18 @@ const GameBoard = () => {
                     transform: `translate(${computerPosition.x}px, ${computerPosition.y}px)`,
                     }}></span>
                     <span className="computerGoalCircle"></span>
-                    <span className="computerGoalPost" ref={computerGoalPost}></span>
+                    <span className="computerGoalPost" ref={computerGoalPostRef}></span>
                 </div>
             </div>
+            <div className="scoreBoardWrapper">
+                  <span id="playerScore">Score: {playerScore}</span>
+                  <span id="computerScore">Score: {computerScore}</span>
+            </div>
+            {(playerScored || computerScored) && (
+              <div className="goalTxtWrapper">
+                  <span className={`goalTxt ${playerScored ? 'playerScored' : 'computerScored'}`}>{playerScored ? 'PLAYER' : 'COMPUTER'} SCORED</span>
+              </div>
+            )}
         </section>
     )
 }
