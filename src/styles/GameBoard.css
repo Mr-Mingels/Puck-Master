@@ -15,6 +15,14 @@
     position: relative;
 }
 
+.gameBoardContent.playerScored {
+    box-shadow: 0 0 5px #0073ff, 0 0 10px #0073ff, 0 0 15px #0073ff, 0 0 20px #0073ff;
+}
+
+.gameBoardContent.computerScored {
+    box-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 15px #ff0000, 0 0 20px #ff0000;
+}
+
 .playerBoardSide {
     width: 50%;
     height: 100%;
@@ -129,6 +137,26 @@
     border-radius: 0 200px 200px 0;
 }
 
+.gameBoardMidLine.playerScored, .gameBoardMidCircle.playerScored, .computerGoalCircle.playerScored, .playerGoalCircle.playerScored, 
+.winnerContent.playerWon {
+    box-shadow: 0 0 5px #0073ff, 0 0 10px #0073ff, 0 0 15px #0073ff, 0 0 20px #0073ff;
+}
+
+.gameBoardMidLine.computerScored, .gameBoardMidCircle.computerScored, .computerGoalCircle.computerScored, .playerGoalCircle.computerScored, 
+.winnerContent.computerWon {
+    box-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 15px #ff0000, 0 0 20px #ff0000;
+}
+
+.computerGoalPost.playerScored, .playerGoalPost.playerScored, .replayBtn.playerWon, .winnerHomeBtn.playerWon {
+    box-shadow: 0 0 5px #0073ff, 0 0 10px #0073ff, 0 0 15px #0073ff, 0 0 20px #0073ff;
+    border-color: #0073ff;
+}
+
+.computerGoalPost.computerScored, .playerGoalPost.computerScored, .replayBtn.computerWon, .winnerHomeBtn.computerWon {
+    box-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 15px #ff0000, 0 0 20px #ff0000;
+    border-color: #ff0000;
+}
+
 .playerGoalPost {
     top: 50%;
     left: -0.4%;
@@ -149,11 +177,11 @@
     margin: 10px 0;
 }
 
-#playerScore {
+#playerScore, .replayBtn.playerWon, .winnerHomeBtn.playerWon, .winnerTxt.playerWon, .goalTxt.playerScored {
     text-shadow: 0 0 5px #0073ff, 0 0 10px #0073ff, 0 0 15px #0073ff, 0 0 20px #0073ff;
 }
 
-#computerScore {
+#computerScore, .replayBtn.computerWon, .winnerHomeBtn.computerWon, .winnerTxt.computerWon, .goalTxt.computerScored {
     text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 15px #ff0000, 0 0 20px #ff0000;
 }
 
@@ -171,10 +199,90 @@
 }
 
 .goalTxt {
-    font-size: 54px;
+    font-size: 64px;
     letter-spacing: 10px;
 }
 
-.goalTxt.playerScored {
-    text-shadow: 0 0 5px #0073ff, 0 0 10px #0073ff, 0 0 15px #0073ff, 0 0 20px #0073ff;
+.bottomPageBtnsWrapper {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 64px;
+    bottom: 0;
+    width: 1375px;
+    height: 80px;
+    margin: 10px 0;
+}
+
+.unStuckBtn, .homeBtn, .replayBtn, .winnerHomeBtn {
+    cursor: pointer;
+    background-color: transparent;
+    color: white;
+    text-shadow: 0 0 5px #340068, 0 0 10px #340068, 0 0 15px #340068, 0 0 20px #340068;
+    border: 1px solid white;
+    padding: 12px;
+    width: 180px;
+    box-shadow: 0 0 5px #340068, 0 0 10px #340068, 0 0 15px #340068, 0 0 20px #340068;
+    transition: all 0.2s ease-in-out;
+}
+
+.unStuckBtn:hover, .homeBtn:hover, .replayBtn:hover, .winnerHomeBtn:hover {
+    border-color: #340068;
+    text-shadow: 0 0 5px #000000, 0 0 10px #000000, 0 0 15px #000000, 0 0 20px #000000;
+    box-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 15px #ffffff, 0 0 20px #ffffff;
+}
+
+.winnerWrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.winnerContent {
+    width: fit-content;
+    background-color: black;
+    padding: 48px;
+    border: 3px solid white;
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: 0 0 5px #8000ff, 0 0 10px #8000ff, 0 0 15px #8000ff, 0 0 20px #8000ff;
+    gap: 48px;
+}
+
+.winnerTxt {
+    text-shadow: 0 0 5px #340068, 0 0 10px #340068, 0 0 15px #340068, 0 0 20px #340068;
+    font-size: 20px;
+}
+
+.winnerBtnsWrapper {
+    display: flex;
+    gap: 48px;
+}
+
+.replayBtn {
+    width: 200px;
+    padding: 15px;
+}
+
+.winnerHomeBtn {
+    width: 200px;
+    padding: 15px;
+}
+
+.winnerHomeBtn.playerWon:hover, .replayBtn.playerWon:hover {
+    border-color: #0073ff;
+}
+
+.winnerHomeBtn.computerWon:hover, .replayBtn.computerWon:hover {
+    border-color: #ff0000;
 }
