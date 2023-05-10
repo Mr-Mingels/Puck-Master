@@ -27,16 +27,20 @@ const Home = ({ currentEasyScore, currentMediumScore, currentHardScore }) => {
     const toggleOpenAndCloseRulesModal = () => {
         if (!rulesOpen) {
             setRulesOpen(true)
+            toggleBodyOverflow(true);
         } else {
             setRulesOpen(false)
+            toggleBodyOverflow(false);
         }
     }
 
     const toggleOpenAndCloseHighScoresModal = () => {
         if (!highScoreOpen) {
             setHighScoreOpen(true)
+            toggleBodyOverflow(true);
         } else {
             setHighScoreOpen(false)
+            toggleBodyOverflow(false);
         }
     }
 
@@ -51,6 +55,16 @@ const Home = ({ currentEasyScore, currentMediumScore, currentHardScore }) => {
     const navigateToHardMode = () => {
         navigate('/game/mode=hard')
     }
+
+    const toggleBodyOverflow = (disable) => {
+        if (disable) {
+          document.body.style.overflow = 'hidden';
+        } else {
+          document.body.style.overflow = 'auto';
+        }
+      };
+
+      
     return (
         <section className="homeWrapper">
             <div className="homeContent">

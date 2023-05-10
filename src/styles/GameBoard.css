@@ -2,7 +2,9 @@
     min-height: 100vh;
     width: 100%;
     color: white;
-    padding: 100px 80px;
+    padding: 0 80px;
+    display: flex;
+    flex-direction: column;
     user-select: none;
 }
 
@@ -166,14 +168,11 @@
 }
 
 .scoreBoardWrapper {
-    position: fixed;
     display: flex;
     align-items: center;
     justify-content: space-around;
     font-size: 24px;
-    top: 0;
-    width: 1359px;
-    height: 80px;
+    height: 75px;
     margin: 10px 0;
 }
 
@@ -204,14 +203,11 @@
 }
 
 .bottomPageBtnsWrapper {
-    position: fixed;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 64px;
-    bottom: 0;
-    width: 1375px;
-    height: 80px;
+    height: 75px;
     margin: 10px 0;
 }
 
@@ -286,3 +282,115 @@
 .winnerHomeBtn.computerWon:hover, .replayBtn.computerWon:hover {
     border-color: #ff0000;
 }
+
+.mobilePlayerScore, .mobileComputerScore {
+    display: none;
+}
+
+@media (max-width: 1536px) {
+    .gameBoardWrapper {
+        padding-right: calc(80px + (100vw - 1536px) / 15);
+        padding-left: calc(80px + (100vw - 1536px) / 15);
+    }
+    .playerGoalCircle, .computerGoalCircle {
+        width: calc(200px + (100vw - 1536px) / 20);
+        height: calc(200px + (100vw - 1536px) / 20);
+    }
+    .playerGoalPost, .computerGoalPost {
+        height: calc(200px + (100vw - 1536px) / 20);
+    }
+    .playerFigure, .computerFigure {
+        width: calc(100px + (100vw - 1536px) / 25);
+        height: calc(100px + (100vw - 1536px) / 25);
+    }
+    .playerFigure {
+        top: calc(41% - (100vw - 1536px) / 60);
+    }
+    .computerFigure {
+        top: calc(41% - (100vw - 1536px) / 60);
+    }
+    .puck {
+        width: calc(40px + (100vw - 1536px) / 83.7);
+        height: calc(40px + (100vw - 1536px) / 83.7);
+    }
+    .goalTxt {
+        font-size: calc(64px + (100vw - 1536px) / 30);
+    }
+  }
+
+  @media (max-width: 800px) {
+    .gameBoardWrapper {
+        padding-top: calc(31px + (100vw - 800px) / 30);
+        padding-bottom: calc(31px + (100vw - 800px) / 30);
+        justify-content: space-between;
+    }
+    .scoreBoardWrapper {
+        display: none;
+    }
+    .bottomPageBtnsWrapper {
+        height: fit-content;
+        margin: 0;
+    }
+    .gameBoardContent {
+        display: flex;
+        flex-direction: column;
+    }
+    .computerBoardSide, .playerBoardSide {
+        width: 100%;
+    }
+    .playerGoalCircle, .computerGoalCircle {
+        width: calc(163px + (100vw - 800px) / 30);
+        height: calc(163px + (100vw - 800px) / 30);
+    }
+    .playerGoalCircle {
+        top: 0%;
+        left: 50%;
+        transform: translate(-50%, 0%);
+        border-radius: 0 0 200px 200px;
+    }
+    .computerGoalCircle {
+        top: unset;
+        bottom: 0%;
+        left: 50%;
+        transform: translate(-50%, 0%);
+        border-radius: 200px 200px 0 0;
+    }
+    .playerGoalPost, .computerGoalPost {
+        height: unset;
+        width: calc(163px + (100vw - 800px) / 30);
+    }
+    .playerGoalPost {
+        top: 0%;
+        left: 50%;
+        transform: translate(-50%, 0%);
+    }
+    .computerGoalPost {
+        top: unset;
+        bottom: 0%;
+        left: 50%;
+        transform: translate(-50%, 0%);
+    }
+    .gameBoardMidLine {
+        height: unset;
+        width: 100%;
+    }
+    .gameBoardMidCircle {
+        width: calc(150px + (100vw - 800px) / 30);
+        height: calc(150px + (100vw - 800px) / 30);
+    }
+    .playerFigure, .computerFigure {
+    }
+    .playerFigure {
+        top: calc(20% - (100vw - 800px) / 60);
+        left: calc(45% - (100vw - 800px) / 60);
+    }
+    .computerFigure {
+        top: unset;
+        bottom: calc(20% - (100vw - 800px) / 60);
+        left: calc(45% - (100vw - 800px) / 60);
+    }
+    .puck {
+    }
+    .goalTxt {
+    }
+  }

@@ -5,7 +5,6 @@ import '../styles/GameBoard.css'
 const GameBoard = ({ getEasyScore, getMediumScore, getHardScore }) => {
     const [computerPosition, setComputerPosition] = useState({ x: 0, y: 0 });
     const [playerPosition, setPlayerPosition] = useState({ x: 0, y: 0 });
-    const [puckPosition, setPuckPosition] = useState({ x: 665, y: 257 });
     const [puckVelocity, setPuckVelocity] = useState({ x: 0, y: 0 });
     const [keysPressed, setKeysPressed] = useState({});
     const [gameStarted, setGameStarted] = useState(false)
@@ -17,7 +16,7 @@ const GameBoard = ({ getEasyScore, getMediumScore, getHardScore }) => {
     const [playerWon, setPlayerWon] = useState(false)
     const [computerWon, setComputerWon] = useState(false)
     const [hardMode, setHardMode] = useState(false)
-    const [computerStep, setComputerStep] = useState(5)
+    const [isDragging, setIsDragging] = useState(false);
     const playerFigureRef = useRef(null);
     const playerBoardSideRef = useRef(null);
     const computerBoardSideRef = useRef(null)
@@ -29,23 +28,102 @@ const GameBoard = ({ getEasyScore, getMediumScore, getHardScore }) => {
     const stopFigureMovementRef = useRef(stopFigureMovement);
     const step = 15;
     const friction = 0.98; // Adjust this value to change the slowing down effect
-    const impactMultiplier = 3;
     const { id } = useParams();
     const navigate = useNavigate()
+
+    
+
+    const getPuckCenterOffset = () => {
+      const puckSize = getPuckSize();
+      return { left: puckSize.width / 2, top: puckSize.height / 2 };
+    };
+    
+    const getPuckSize = () => {
+      const gameBoardWidth = window.innerWidth;
+      let puckWidth = 40; // Default puck width
+      let puckHeight = 40; // Default puck height
+    
+      if (gameBoardWidth <= 1536) {
+        puckWidth = 40 + (gameBoardWidth - 1536) / 27;
+        puckHeight = 40 + (gameBoardWidth - 1536) / 100;
+      }
+    
+      return { width: puckWidth, height: puckHeight };
+    };
+    
+
+    const calculateInitialPuckPosition = () => {
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+      const x = (window.innerWidth - scrollbarWidth) * 0.446;
+      const y = 277.4;
+      const puckCenterOffset = getPuckCenterOffset();
+    
+      return { x: x - puckCenterOffset.left, y: y - puckCenterOffset.top };
+    };
+    
+    useEffect(() => {
+      setPuckPosition(calculateInitialPuckPosition())
+    },[])
+    
+    
+    const calculateImpactMultiplier = () => {
+      if (window.innerWidth >= 800.01) {
+        const impactNumber = window.innerWidth * 0.0026041666666666665;
+        return impactNumber
+      } else {
+        const impactNumber = window.innerWidth * 0.00375
+        return impactNumber
+      }
+    }
+
+    const calculateComputerSpeed = () => {
+      let computerSpeed;
+        if (id === 'mode=easy') {
+          computerSpeed = window.innerWidth * 0.0032552083333333
+        } else if (id === 'mode=medium' || id === 'mode=hard') {
+          computerSpeed = window.innerWidth * 0.0075104166666667
+        }
+      return computerSpeed
+    }
+
+
+    useEffect(() => {
+      const handleResize = () => {
+        setPuckPosition(calculateInitialPuckPosition());
+        setImpactMultiplier(calculateImpactMultiplier())
+      };
+  
+      window.addEventListener("resize", handleResize);
+      // Clean up the event listener when the component is unmounted
+      return () => {
+        window.removeEventListener("resize", handleResize);
+      };
+    }, []);
+
+    useEffect(() => {
+      console.log(computerStep)
+      console.log(window.innerWidth)
+      console.log(impactMultiplier)
+    },[window.innerWidth])
+
+    const [computerStep, setComputerStep] = useState(calculateComputerSpeed())
+    const [puckPosition, setPuckPosition] = useState(calculateInitialPuckPosition());
+    const [impactMultiplier, setImpactMultiplier] = useState(calculateImpactMultiplier())
 
     useEffect(() => {
       if (id !== 'mode=easy' && id !== 'mode=medium' && id !== 'mode=hard') {
         navigate('/');
       }
+      if (computerStep <= 3.1 || window.innerWidth <= 800.01) return
       if (id === 'mode=easy') {
-        setComputerStep(5)
+        setComputerStep(calculateComputerSpeed())
       } else if (id === 'mode=medium') {
-        setComputerStep(10)
+        setComputerStep(calculateComputerSpeed())
       } else if (id === 'mode=hard') {
-        setComputerStep(10)
+        setComputerStep(calculateComputerSpeed())
         setHardMode(true)
       }
-    }, [id, navigate]);
+    }, [id, navigate, window.innerWidth]);
 
     const checkCollision = (rect1, rect2) => {
         return (
@@ -350,6 +428,7 @@ const GameBoard = ({ getEasyScore, getMediumScore, getHardScore }) => {
   
 
     const handleMouseDown = (e = {}) => {
+      setIsDragging(true);
       console.log(e)
         const clientX = e.clientX || (e.touches && e.touches[0].clientX) || undefined;
         const clientY = e.clientY || (e.touches && e.touches[0].clientY) || undefined; 
@@ -407,6 +486,7 @@ const GameBoard = ({ getEasyScore, getMediumScore, getHardScore }) => {
           };
       
           const handleMouseUp = () => {
+            setIsDragging(false);
             window.removeEventListener("mousemove", handleMouseMove);
             window.removeEventListener("mouseup", handleMouseUp);
             window.removeEventListener("touchmove", handleMouseMove);
@@ -418,6 +498,14 @@ const GameBoard = ({ getEasyScore, getMediumScore, getHardScore }) => {
           window.addEventListener("touchmove", handleMouseMove);
           window.addEventListener("touchend", handleMouseUp);
         };
+
+        useEffect(() => {
+          if (isDragging) {
+            document.body.style.overflow = "hidden";
+          } else {
+            document.body.style.overflow = "auto";
+          }
+        }, [isDragging]);
 
 
         useEffect(() => {
@@ -433,20 +521,20 @@ const GameBoard = ({ getEasyScore, getMediumScore, getHardScore }) => {
 
           
         const checkForGoal = () => {
+          if (!playerGoalPostRef.current) return
           const playerGoalPostRect = playerGoalPostRef.current.getBoundingClientRect();
           const computerGoalPostRect = computerGoalPostRef.current.getBoundingClientRect();
           const puckRect = document.querySelector(".puck").getBoundingClientRect();
           if (checkCollision(computerGoalPostRect, puckRect)) {
             setPlayerPosition({ x: 0, y: 0 });
             setComputerPosition({ x: 0, y: 0 });
-            setPuckPosition({ x: 665, y: 257 });
+            setPuckPosition(calculateInitialPuckPosition());
             setStopFigureMovement(true)
             setGameStarted(false)
-            console.log('before')
             setPlayerScore(playerScore + 1)
-            console.log('past')
             setPlayerScored(true)
             setTimeout(() => {
+              setPlayerPosition({ x: 0, y: 0 });
               setStopFigureMovement(false)
               setPlayerScored(false)
               setPuckVelocity({ x: 0, y: 0 });
@@ -455,12 +543,13 @@ const GameBoard = ({ getEasyScore, getMediumScore, getHardScore }) => {
           if (checkCollision(playerGoalPostRect, puckRect)) {
             setPlayerPosition({ x: 0, y: 0 });
             setComputerPosition({ x: 0, y: 0 });
-            setPuckPosition({ x: 665, y: 257 });
+            setPuckPosition(calculateInitialPuckPosition());
             setStopFigureMovement(true)
             setGameStarted(false)
             setComputerScore(computerScore + 1)
             setComputerScored(true)
             setTimeout(() => {
+              setPlayerPosition({ x: 0, y: 0 });
               setStopFigureMovement(false)
               setComputerScored(false)
               setPuckVelocity({ x: 0, y: 0 });
@@ -479,7 +568,7 @@ const GameBoard = ({ getEasyScore, getMediumScore, getHardScore }) => {
         const unStuckThePuck = () => {
           setPlayerPosition({ x: 0, y: 0 });
           setComputerPosition({ x: 0, y: 0 });
-          setPuckPosition({ x: 665, y: 257 });
+          setPuckPosition(calculateInitialPuckPosition());
           setPuckVelocity({ x: 0, y: 0 });
           setGameStarted(false)
         }
@@ -511,7 +600,7 @@ const GameBoard = ({ getEasyScore, getMediumScore, getHardScore }) => {
         const Replay = () => {
             setComputerPosition({ x: 0, y: 0 });
             setPlayerPosition({ x: 0, y: 0 });
-            setPuckPosition({ x: 665, y: 257 });
+            setPuckPosition(calculateInitialPuckPosition());
             setPuckVelocity({ x: 0, y: 0 });
             setGameStarted(false)
             setPlayerScore(0)
@@ -525,6 +614,10 @@ const GameBoard = ({ getEasyScore, getMediumScore, getHardScore }) => {
 
     return (
         <section className="gameBoardWrapper">
+          <div className="scoreBoardWrapper">
+                  <span id="playerScore">Score: {playerScore}</span>
+                  <span id="computerScore">Score: {computerScore}</span>
+            </div>
             <div className={`gameBoardContent ${playerScored ? 'playerScored' : ''} ${computerScored ? 'computerScored' : ''}`} 
             ref={gameBoardContentRef}>
                 <div className="playerBoardSide" ref={playerBoardSideRef}>
@@ -537,6 +630,7 @@ const GameBoard = ({ getEasyScore, getMediumScore, getHardScore }) => {
                     </span>
                     <span className={`playerGoalPost ${playerScored ? 'playerScored' : ''} ${computerScored ? 'computerScored' : ''}`} 
                     ref={playerGoalPostRef}></span>
+                    <span className="mobilePlayerScore">{playerScore}</span>
                 </div>
                     <span className={`gameBoardMidLine ${playerScored ? 'playerScored' : ''} ${computerScored ? 'computerScored' : ''}`}>
                     </span>
@@ -554,11 +648,8 @@ const GameBoard = ({ getEasyScore, getMediumScore, getHardScore }) => {
                     </span>
                     <span className={`computerGoalPost ${playerScored ? 'playerScored' : ''} ${computerScored ? 'computerScored' : ''}`} 
                     ref={computerGoalPostRef}></span>
+                    <span className="mobileComputerScore">{computerScore}</span>
                 </div>
-            </div>
-            <div className="scoreBoardWrapper">
-                  <span id="playerScore">Score: {playerScore}</span>
-                  <span id="computerScore">Score: {computerScore}</span>
             </div>
             {(playerScored || computerScored) && (
               <div className="goalTxtWrapper">
