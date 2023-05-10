@@ -1,6 +1,6 @@
 import './App.css'
-import { BrowserRouter, Routes, Route, useLocation, useParams, useNavigate } from "react-router-dom";
-import React, { lazy, Suspense, useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import React, { lazy, Suspense, useState } from "react";
 
 const Home = lazy(() => import('./components/Home'));
 const GameBoard = lazy(() => import('./components/GameBoard'));
@@ -30,10 +30,6 @@ const App = () => {
   const getHardScore = (data) => {
     setCurrentHardScore(data)
   }
-
-  useEffect(() => {
-    console.log(currentEasyScore, currentMediumScore, currentHardScore)
-  },[currentEasyScore, currentMediumScore, currentHardScore])
 
   
 

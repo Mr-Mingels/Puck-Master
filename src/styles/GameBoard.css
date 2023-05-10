@@ -10,7 +10,9 @@
 
 .gameBoardContent {
     display: flex;
+    flex-grow: 1;
     border: 3px solid white;
+    min-height: 480px;
     height: 560px;
     box-shadow: 0 0 5px #8000ff, 0 0 10px #8000ff, 0 0 15px #8000ff, 0 0 20px #8000ff;
     border-radius: 25px;
@@ -33,9 +35,8 @@
 
 .playerFigure {
     position: absolute;
-    top: 41%;
+    top: calc(50% - (100px / 2));
     left: 10%;
-    transform: translate(-10%, -50%);
     height: 100px;
     width: 100px;
     border-radius: 50%;
@@ -44,6 +45,7 @@
     box-shadow: 0 0 5px #0044ff, 0 0 10px #0044ff, 0 0 15px #0044ff, 0 0 20px #0044ff;
     z-index: 100;
 }
+
 
 .playerFigure.pointer-event-off {
     pointer-events: none;
@@ -78,8 +80,6 @@
     border: 10px solid white;
     height: 40px;
     width: 40px;
-    top: 50%;
-    left: 40%;
     border-radius: 50%;
     background-color: rgb(221, 221, 221);
     box-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 15px #ffffff, 0 0 20px #ffffff;
@@ -94,9 +94,8 @@
 
 .computerFigure {
     position: absolute;
-    top: 41%;
+    top: calc(50% - (100px / 2));
     right: 10%;
-    transform: translatey(-50%);
     height: 100px;
     width: 100px;
     border-radius: 50%;
@@ -176,11 +175,11 @@
     margin: 10px 0;
 }
 
-#playerScore, .replayBtn.playerWon, .winnerHomeBtn.playerWon, .winnerTxt.playerWon, .goalTxt.playerScored {
+#playerScore, .replayBtn.playerWon, .winnerHomeBtn.playerWon, .winnerTxt.playerWon, .goalTxt.playerScored, .mobilePlayerScore {
     text-shadow: 0 0 5px #0073ff, 0 0 10px #0073ff, 0 0 15px #0073ff, 0 0 20px #0073ff;
 }
 
-#computerScore, .replayBtn.computerWon, .winnerHomeBtn.computerWon, .winnerTxt.computerWon, .goalTxt.computerScored {
+#computerScore, .replayBtn.computerWon, .winnerHomeBtn.computerWon, .winnerTxt.computerWon, .goalTxt.computerScored, .mobileComputerScore {
     text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 15px #ff0000, 0 0 20px #ff0000;
 }
 
@@ -265,12 +264,7 @@
     gap: 48px;
 }
 
-.replayBtn {
-    width: 200px;
-    padding: 15px;
-}
-
-.winnerHomeBtn {
+.replayBtn, .winnerHomeBtn {
     width: 200px;
     padding: 15px;
 }
@@ -285,12 +279,20 @@
 
 .mobilePlayerScore, .mobileComputerScore {
     display: none;
+    padding: 15px;
+    position: absolute;
+    right: 0;
 }
 
-@media (max-width: 1536px) {
+.mobilePlayerScore {
+    bottom: 0;
+}
+
+@media screen and (min-width: 1536.1px) and (max-width: 100vw) {
     .gameBoardWrapper {
         padding-right: calc(80px + (100vw - 1536px) / 15);
         padding-left: calc(80px + (100vw - 1536px) / 15);
+        justify-content: space-between;
     }
     .playerGoalCircle, .computerGoalCircle {
         width: calc(200px + (100vw - 1536px) / 20);
@@ -304,10 +306,44 @@
         height: calc(100px + (100vw - 1536px) / 25);
     }
     .playerFigure {
-        top: calc(41% - (100vw - 1536px) / 60);
+        top: calc(50% - (calc(100px + (100vw - 1536px) / 25) / 2));
+        left: calc(5% + (100vw - 1536px) * 0.00001)
     }
     .computerFigure {
-        top: calc(41% - (100vw - 1536px) / 60);
+        top: calc(50% - (calc(100px + (100vw - 1536px) / 25) / 2));
+        right: calc(5% + (100vw - 1536px) * 0.00001)
+    }
+    .puck {
+        width: calc(40px + (100vw - 1536px) / 83.7);
+        height: calc(40px + (100vw - 1536px) / 83.7);
+    }
+    .goalTxt {
+        font-size: calc(64px + (100vw - 1536px) / 30);
+    }
+  }
+
+@media (max-width: 1536px) {
+    .gameBoardWrapper {
+        padding-right: calc(80px + (100vw - 1536px) / 15);
+        padding-left: calc(80px + (100vw - 1536px) / 15);
+        justify-content: space-between;
+    }
+    .playerGoalCircle, .computerGoalCircle {
+        width: calc(200px + (100vw - 1536px) / 20);
+        height: calc(200px + (100vw - 1536px) / 20);
+    }
+    .playerGoalPost, .computerGoalPost {
+        height: calc(200px + (100vw - 1536px) / 20);
+    }
+    .playerFigure, .computerFigure {
+        width: calc(100px + (100vw - 1536px) / 25);
+        height: calc(100px + (100vw - 1536px) / 25);
+    }
+    .playerFigure {
+        top: calc(50% - (calc(100px + (100vw - 1536px) / 25) / 2));
+    }
+    .computerFigure {
+        top: calc(50% - (calc(100px + (100vw - 1536px) / 25) / 2));
     }
     .puck {
         width: calc(40px + (100vw - 1536px) / 83.7);
@@ -322,14 +358,9 @@
     .gameBoardWrapper {
         padding-top: calc(31px + (100vw - 800px) / 30);
         padding-bottom: calc(31px + (100vw - 800px) / 30);
-        justify-content: space-between;
     }
     .scoreBoardWrapper {
         display: none;
-    }
-    .bottomPageBtnsWrapper {
-        height: fit-content;
-        margin: 0;
     }
     .gameBoardContent {
         display: flex;
@@ -339,8 +370,8 @@
         width: 100%;
     }
     .playerGoalCircle, .computerGoalCircle {
-        width: calc(163px + (100vw - 800px) / 30);
-        height: calc(163px + (100vw - 800px) / 30);
+        width: calc(150px + (100vw - 800px) / 12);
+        height: calc(150px + (100vw - 800px) / 12);
     }
     .playerGoalCircle {
         top: 0%;
@@ -357,7 +388,7 @@
     }
     .playerGoalPost, .computerGoalPost {
         height: unset;
-        width: calc(163px + (100vw - 800px) / 30);
+        width: calc(150px + (100vw - 800px) / 12);
     }
     .playerGoalPost {
         top: 0%;
@@ -375,22 +406,58 @@
         width: 100%;
     }
     .gameBoardMidCircle {
-        width: calc(150px + (100vw - 800px) / 30);
-        height: calc(150px + (100vw - 800px) / 30);
+        width: calc(150px + (100vw - 800px) / 10);
+        height: calc(150px + (100vw - 800px) / 10);
     }
     .playerFigure, .computerFigure {
+        width: calc(70px + (100vw - 800px) / 25);
+        height: calc(70px + (100vw - 800px) / 25);
     }
     .playerFigure {
-        top: calc(20% - (100vw - 800px) / 60);
-        left: calc(45% - (100vw - 800px) / 60);
+        top: calc(15% + (100vw - 800px) / 50);
+        left: calc(45% + (100vw - 800px) / 50);
     }
     .computerFigure {
         top: unset;
-        bottom: calc(20% - (100vw - 800px) / 60);
-        left: calc(45% - (100vw - 800px) / 60);
+        bottom: calc(15% + (100vw - 800px) / 50);
+        left: calc(45% + (100vw - 800px) / 50);
     }
     .puck {
+        width: calc(31.2px + (100vw - 800px) / 50);
+        height: calc(31.2px + (100vw - 800px) / 50);
+        justify-content: center;
     }
     .goalTxt {
+        text-align: center;
+        line-height: 40px;
+        font-size: calc(40px + (100vw - 800px) / 30);
+    }
+    .bottomPageBtnsWrapper {
+        padding: 5px;
+        gap: calc(64px + (100vw - 800px) / 12);
+        height: 45px;
+    }
+    .homeBtn, .unStuckBtn {
+        padding: calc(12px + (100vw - 800px) / 100);
+        width: calc(180px + (100vw - 800px) / 8);
+        font-size: calc(13px + (100vw - 800px) / 100);
+    }
+    .mobileComputerScore, .mobilePlayerScore {
+        display: block;
+    }
+    .winnerContent {
+        padding: calc(48px + (100vw - 800px) / 20);
+    }
+    .winnerTxt {
+        text-align: center;
+        font-size: calc(20px + (100vw - 800px) / 60);
+    }
+    .winnerBtnsWrapper {
+        gap: calc(48px + (100vw - 800px) / 20);
+    }
+    .replayBtn, .winnerHomeBtn {
+        width: calc(200px + (100vw - 800px) / 5);
+        padding: calc(15px + (100vw - 800px) / 100);
+        font-size: calc(13.3333px + (100vw - 800px) / 100);
     }
   }
