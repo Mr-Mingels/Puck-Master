@@ -106,7 +106,7 @@ const GameBoard = ({ getEasyScore, getMediumScore, getHardScore }) => {
 
         // Calculate the mid-point of the board
         const midBoardX = boardRect.x + boardRect.width / (window.innerWidth > 1536 ? (1.2) : (window.innerWidth >= 800 ? 1.4 : 2.4));
-        const midBoardY = boardRect.y + boardRect.height / (window.innerWidth > 1536 ? (2.4) : (window.innerWidth >= 800 ? 2.4 : 1.4));
+        const midBoardY = boardRect.y + boardRect.height / (window.innerWidth > 1536 ? (2.4) : (window.innerWidth >= 800 ? 2.4 : 4.5));
 
         // Adjust targetX and targetY based on the mid-point of the board
         const targetX = puckRect.x + puckRect.width / 2 - midBoardX;
