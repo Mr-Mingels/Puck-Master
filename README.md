@@ -2,11 +2,11 @@
 
 ## **Project Introduction:**
 
-Puck-Masters is an interactive and engaging virtual air hockey game built using the power of React. This application provides a delightful and addictive gameplay experience where users can compete against an AI opponent right from their browser!
+Puck-Master is an interactive and engaging virtual air hockey game built using the power of React. This application provides a delightful and addictive gameplay experience where users can compete against an AI opponent right from their browser!
 
 The game provides three levels of difficulty - Easy, Medium, and Hard, thereby ensuring a challenge for both newbies and pros alike. Each game's objective is simple: outscore your computer-controlled opponent by controlling your paddle and hitting the puck into the opponent's goal.
 
-In Puck-Masters, I have incorporated several key features such as real-time collision detection, score tracking, and state-of-the-art game physics to deliver a realistic gameplay experience. Whether you're using a mouse or a touch device, the intuitive control mechanisms make maneuvering your paddle a breeze.
+In Puck-Master, I have incorporated several key features such as real-time collision detection, score tracking, and state-of-the-art game physics to deliver a realistic gameplay experience. Whether you're using a mouse or a touch device, the intuitive control mechanisms make maneuvering your paddle a breeze.
 
 
 ## **About The Project:**
@@ -45,8 +45,6 @@ The common functionalities are:
 - High Score Point System
 
 - Game Modes
-
-- Responsive Web Design
 
 - Collision Detection
 
