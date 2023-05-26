@@ -1,70 +1,55 @@
-# Getting Started with Create React App
+### **[Puck-Master](https://quicksum-production.up.railway.app/)**
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## **Project Introduction:**
 
-## Available Scripts
+Puck-Masters is an interactive and engaging virtual air hockey game built using the power of React. This application provides a delightful and addictive gameplay experience where users can compete against an AI opponent right from their browser!
 
-In the project directory, you can run:
+The game provides three levels of difficulty - Easy, Medium, and Hard, thereby ensuring a challenge for both newbies and pros alike. Each game's objective is simple: outscore your computer-controlled opponent by controlling your paddle and hitting the puck into the opponent's goal.
 
-### `npm start`
+In Puck-Masters, I have incorporated several key features such as real-time collision detection, score tracking, and state-of-the-art game physics to deliver a realistic gameplay experience. Whether you're using a mouse or a touch device, the intuitive control mechanisms make maneuvering your paddle a breeze.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## **About The Project:**
 
-### `npm test`
+![An image of the home screen of the Puck-Master application](./public/images/puckMasterScreenShot.png)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Puck-Master is virtual table hockey game
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The common functionalities are:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- The user can start the game with different difficulty modes such as easy, medium, and hard
+- The user can move the player figure around by dragging with a mouse or touch on mobile devices. Desktop users can also use the "W, A, S, D" keys to move the player figure
+- The player can score a goal by getting the puck into the computer's goalpost, and the computer can also score by getting the puck into the player's goalpost. When a goal is scored, the game temporarily stops and the puck is reset to the center. The score of the player who scored the goal is also increased by one
+- The game checks if the player or the computer has reached a score of 15, which is the win condition. When a player wins, a message is displayed and the game can be replayed or exited
+- If the puck gets stuck during gameplay, the user has the option to "unstuck" the puck, which resets the puck position back to its default position
+- The user can replay the game after a win or loss. This resets the game state, including scores and positions of the player, computer, and puck
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+### **Built With:**
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- React.js
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- JavaScript (ES6+)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- HTML/CSS
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### **Key Concepts:**
 
-## Learn More
+- AI Computer
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- Interactive Game
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Responsive Web Design
 
-### Code Splitting
+- High Score Point System
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- Game Modes
 
-### Analyzing the Bundle Size
+- Responsive Web Design
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- Collision Detection
 
-### Making a Progressive Web App
+- Component-based Architecture
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- React Hooks/Ref-based Manipulation
