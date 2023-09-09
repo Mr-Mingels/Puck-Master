@@ -1,4 +1,4 @@
-### **[Puck-Master](https://quicksum-production.up.railway.app/)**
+### **[Puck-Master](https://puck-master.vercel.app/)**
 
 ## **Project Introduction:**
 
