@@ -406,7 +406,7 @@ const GameBoard = ({ getEasyScore, getMediumScore, getHardScore }) => {
   
 
     const handleMouseDown = (e = {}) => {
-        document.body.style.overflow = "hidden";
+        document.body.classList.add('no-scroll');
         const clientX = e.clientX || (e.touches && e.touches[0].clientX) || undefined;
         const clientY = e.clientY || (e.touches && e.touches[0].clientY) || undefined; 
         
@@ -461,7 +461,7 @@ const GameBoard = ({ getEasyScore, getMediumScore, getHardScore }) => {
           };
       
           const handleMouseUp = () => {
-            document.body.style.overflow = "auto";
+            document.body.classList.remove('no-scroll');
             window.removeEventListener("mousemove", handleMouseMove);
             window.removeEventListener("mouseup", handleMouseUp);
             window.removeEventListener("touchmove", handleMouseMove);
@@ -602,7 +602,8 @@ const GameBoard = ({ getEasyScore, getMediumScore, getHardScore }) => {
                     transform: `translate(${playerPosition.x}px, ${playerPosition.y}px)`,
                     }}
                     onMouseDown={handleMouseDown}
-                    onTouchStart={handleMouseDown}></span>
+                    onTouchStart={handleMouseDown}
+                    onTouchMove={handleMouseDown}></span>
                     <span className={`playerGoalCircle ${playerScored ? 'playerScored' : ''} ${computerScored ? 'computerScored' : ''}`}>
                     </span>
                     <span className={`playerGoalPost ${playerScored ? 'playerScored' : ''} ${computerScored ? 'computerScored' : ''}`} 
