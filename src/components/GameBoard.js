@@ -17,7 +17,6 @@ const GameBoard = ({ getEasyScore, getMediumScore, getHardScore }) => {
     const [stopFigureMovement, setStopFigureMovement] = useState(false)
     const [playerWon, setPlayerWon] = useState(false)
     const [computerWon, setComputerWon] = useState(false)
-    const [isDragging, setIsDragging] = useState(false);
     const playerFigureRef = useRef(null);
     const playerBoardSideRef = useRef(null);
     const computerBoardSideRef = useRef(null)
@@ -407,7 +406,7 @@ const GameBoard = ({ getEasyScore, getMediumScore, getHardScore }) => {
   
 
     const handleMouseDown = (e = {}) => {
-      setIsDragging(true);
+        document.body.style.overflow = "hidden";
         const clientX = e.clientX || (e.touches && e.touches[0].clientX) || undefined;
         const clientY = e.clientY || (e.touches && e.touches[0].clientY) || undefined; 
         
@@ -462,7 +461,7 @@ const GameBoard = ({ getEasyScore, getMediumScore, getHardScore }) => {
           };
       
           const handleMouseUp = () => {
-            setIsDragging(false);
+            document.body.style.overflow = "auto";
             window.removeEventListener("mousemove", handleMouseMove);
             window.removeEventListener("mouseup", handleMouseUp);
             window.removeEventListener("touchmove", handleMouseMove);
@@ -474,15 +473,6 @@ const GameBoard = ({ getEasyScore, getMediumScore, getHardScore }) => {
           window.addEventListener("touchmove", handleMouseMove);
           window.addEventListener("touchend", handleMouseUp);
         };
-
-        useEffect(() => {
-          if (isDragging) {
-            document.body.style.overflow = "hidden";
-          } else {
-            document.body.style.overflow = "auto";
-          }
-        }, [isDragging, puckPosition]);
-
 
         useEffect(() => {
           if (gameStarted) return
