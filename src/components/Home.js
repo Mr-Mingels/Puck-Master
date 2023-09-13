@@ -24,6 +24,10 @@ const Home = ({ currentEasyScore, currentMediumScore, currentHardScore }) => {
         }
       }, [currentEasyScore, currentMediumScore, currentHardScore]);
 
+      useEffect(() => {
+        document.body.style.overflow = "auto";
+      }, []);
+
     const toggleOpenAndCloseRulesModal = () => {
         if (!rulesOpen) {
             setRulesOpen(true)

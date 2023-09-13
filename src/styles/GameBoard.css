@@ -14,6 +14,7 @@
     border: 3px solid white;
     min-height: 480px;
     height: 560px;
+    max-height: 700px;
     box-shadow: 0 0 5px #8000ff, 0 0 10px #8000ff, 0 0 15px #8000ff, 0 0 20px #8000ff;
     border-radius: 25px;
     position: relative;
@@ -296,7 +297,6 @@
     .gameBoardWrapper {
         padding-right: calc(80px + (100vw - 1536px) / 15);
         padding-left: calc(80px + (100vw - 1536px) / 15);
-        justify-content: space-between;
     }
     .playerGoalCircle, .computerGoalCircle {
         width: calc(200px + (100vw - 1536px) / 20);
@@ -331,7 +331,6 @@
     .gameBoardWrapper {
         padding-right: calc(80px + (100vw - 1536px) / 15);
         padding-left: calc(80px + (100vw - 1536px) / 15);
-        justify-content: space-between;
     }
     .playerGoalCircle, .computerGoalCircle {
         width: calc(200px + (100vw - 1536px) / 20);
@@ -363,6 +362,7 @@
     .gameBoardWrapper {
         padding-top: calc(31px + (100vw - 800px) / 30);
         padding-bottom: calc(31px + (100vw - 800px) / 30);
+        overflow-y: auto;
     }
     .scoreBoardWrapper {
         display: none;

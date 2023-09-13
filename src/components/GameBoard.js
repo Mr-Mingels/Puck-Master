@@ -476,12 +476,12 @@ const GameBoard = ({ getEasyScore, getMediumScore, getHardScore }) => {
         };
 
         useEffect(() => {
-          if (isDragging) {
+          if (isDragging || window.innerWidth <= 800) {
             document.body.style.overflow = "hidden";
           } else {
             document.body.style.overflow = "auto";
           }
-        }, [isDragging]);
+        }, [isDragging, window.innerWidth]);
 
 
         useEffect(() => {
@@ -519,7 +519,7 @@ const GameBoard = ({ getEasyScore, getMediumScore, getHardScore }) => {
               setStopFigureMovement(false)
               setPlayerScored(false)
               setPuckVelocity({ x: 0, y: 0 });
-            }, 3000);
+            }, 1000);
           } 
           if (checkCollision(playerGoalPostRect, puckRect)) {
             setPlayerPosition({ x: 0, y: 0 });
@@ -539,7 +539,7 @@ const GameBoard = ({ getEasyScore, getMediumScore, getHardScore }) => {
               setStopFigureMovement(false)
               setComputerScored(false)
               setPuckVelocity({ x: 0, y: 0 });
-            }, 3000);
+            }, 1000);
           }
         }
 
