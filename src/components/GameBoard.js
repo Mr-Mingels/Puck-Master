@@ -602,8 +602,7 @@ const GameBoard = ({ getEasyScore, getMediumScore, getHardScore }) => {
                     transform: `translate(${playerPosition.x}px, ${playerPosition.y}px)`,
                     }}
                     onMouseDown={handleMouseDown}
-                    onTouchStart={handleMouseDown}
-                    onTouchMove={handleMouseDown}></span>
+                    onTouchStart={handleMouseDown}></span>
                     <span className={`playerGoalCircle ${playerScored ? 'playerScored' : ''} ${computerScored ? 'computerScored' : ''}`}>
                     </span>
                     <span className={`playerGoalPost ${playerScored ? 'playerScored' : ''} ${computerScored ? 'computerScored' : ''}`} 
