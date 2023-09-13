@@ -476,12 +476,12 @@ const GameBoard = ({ getEasyScore, getMediumScore, getHardScore }) => {
         };
 
         useEffect(() => {
-          if (isDragging || window.innerWidth <= 800) {
+          if (isDragging) {
             document.body.style.overflow = "hidden";
           } else {
             document.body.style.overflow = "auto";
           }
-        }, [isDragging, window.innerWidth]);
+        }, [isDragging, puckPosition]);
 
 
         useEffect(() => {
