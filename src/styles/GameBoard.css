@@ -223,7 +223,7 @@
     transition: all 0.2s ease-in-out;
 }
 
-.unStuckBtn:hover, .homeBtn:hover, .replayBtn:hover, .winnerHomeBtn:hover, .mobileHomeBtn:hover {
+.unStuckBtn:hover, .homeBtn:hover, .replayBtn:hover, .winnerHomeBtn:hover, .mobileHomeBtn:hover, .mobileUnstuckBtn:hover {
     border-color: #340068;
     text-shadow: 0 0 5px #000000, 0 0 10px #000000, 0 0 15px #000000, 0 0 20px #000000;
     box-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 15px #ffffff, 0 0 20px #ffffff;
