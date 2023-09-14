@@ -406,7 +406,7 @@ const GameBoard = ({ getEasyScore, getMediumScore, getHardScore }) => {
   
 
     const handleMouseDown = (e = {}) => {
-        document.body.classList.add('no-scroll');
+        document.body.style.overflow = 'hidden';
         const clientX = e.clientX || (e.touches && e.touches[0].clientX) || undefined;
         const clientY = e.clientY || (e.touches && e.touches[0].clientY) || undefined; 
         
@@ -461,7 +461,7 @@ const GameBoard = ({ getEasyScore, getMediumScore, getHardScore }) => {
           };
       
           const handleMouseUp = () => {
-            document.body.classList.remove('no-scroll');
+            document.body.style.overflow = 'auto';
             window.removeEventListener("mousemove", handleMouseMove);
             window.removeEventListener("mouseup", handleMouseUp);
             window.removeEventListener("touchmove", handleMouseMove);
@@ -484,6 +484,9 @@ const GameBoard = ({ getEasyScore, getMediumScore, getHardScore }) => {
         },[playerPosition])
         
         
+        useEffect(() => {
+          console.log(document.body.style.overflow)
+        },[document.body.style.overflow])
 
           
         const checkForGoal = () => {
