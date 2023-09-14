@@ -223,7 +223,7 @@
     transition: all 0.2s ease-in-out;
 }
 
-.unStuckBtn:hover, .homeBtn:hover, .replayBtn:hover, .winnerHomeBtn:hover {
+.unStuckBtn:hover, .homeBtn:hover, .replayBtn:hover, .winnerHomeBtn:hover, .mobileHomeBtn:hover {
     border-color: #340068;
     text-shadow: 0 0 5px #000000, 0 0 10px #000000, 0 0 15px #000000, 0 0 20px #000000;
     box-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 15px #ffffff, 0 0 20px #ffffff;
@@ -291,6 +291,36 @@
 
 .mobilePlayerScore {
     top: 0;
+}
+
+.mobileUnstuckBtn {
+    right: unset;
+    left: 15px;
+    width: fit-content;
+}
+
+.mobileHomeBtn, .mobileUnstuckBtn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background-color: transparent;
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    text-shadow: 0 0 5px #340068, 0 0 10px #340068, 0 0 15px #340068, 0 0 20px #340068;
+    border: 1px solid white;
+    box-shadow: 0 0 5px #340068, 0 0 10px #340068, 0 0 15px #340068, 0 0 20px #340068;
+    transition: all 0.2s ease-in-out;
+    z-index: 200;
+}
+
+.mobileHomeBtnIcon, .mobileUnstuckBtnIcon {
+    width: 18px;
+    height: 18px;
 }
 
 @media screen and (min-width: 1536.1px) and (max-width: 100vw) {
@@ -467,5 +497,11 @@
         width: calc(200px + (100vw - 800px) / 5);
         padding: calc(15px + (100vw - 800px) / 100);
         font-size: calc(13.3333px + (100vw - 800px) / 100);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .homeBtn, .unStuckBtn {
+        display: none;
     }
   }

@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import '../styles/GameBoard.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHouse, faArrowsRotate } from '@fortawesome/free-solid-svg-icons';
+
 
 const GameBoard = ({ getEasyScore, getMediumScore, getHardScore }) => {
     const [computerPosition, setComputerPosition] = useState({ x: 0, y: 0 });
@@ -15,6 +18,7 @@ const GameBoard = ({ getEasyScore, getMediumScore, getHardScore }) => {
     const [playerScored, setPlayerScored] = useState(false)
     const [computerScored, setComputerScored] = useState(false)
     const [stopFigureMovement, setStopFigureMovement] = useState(false)
+    const [isDragging, setIsDragging] = useState(false)
     const [playerWon, setPlayerWon] = useState(false)
     const [computerWon, setComputerWon] = useState(false)
     const playerFigureRef = useRef(null);
@@ -406,7 +410,7 @@ const GameBoard = ({ getEasyScore, getMediumScore, getHardScore }) => {
   
 
     const handleMouseDown = (e = {}) => {
-        document.body.style.overflow = 'hidden';
+        setIsDragging(true)
         const clientX = e.clientX || (e.touches && e.touches[0].clientX) || undefined;
         const clientY = e.clientY || (e.touches && e.touches[0].clientY) || undefined; 
         
@@ -461,7 +465,7 @@ const GameBoard = ({ getEasyScore, getMediumScore, getHardScore }) => {
           };
       
           const handleMouseUp = () => {
-            document.body.style.overflow = 'auto';
+            setIsDragging(false)
             window.removeEventListener("mousemove", handleMouseMove);
             window.removeEventListener("mouseup", handleMouseUp);
             window.removeEventListener("touchmove", handleMouseMove);
@@ -485,8 +489,12 @@ const GameBoard = ({ getEasyScore, getMediumScore, getHardScore }) => {
         
         
         useEffect(() => {
-          console.log(document.body.style.overflow)
-        },[document.body.style.overflow])
+          if (isDragging || window.innerWidth <= 768) {
+            document.body.style.overflow = 'hidden';
+          } else {
+            document.body.style.overflow = 'auto';
+          }
+        }, [isDragging, window.innerWidth])
 
           
         const checkForGoal = () => {
@@ -634,6 +642,12 @@ const GameBoard = ({ getEasyScore, getMediumScore, getHardScore }) => {
                     ref={computerGoalPostRef}></span>
                     <span className="mobileComputerScore">{computerScore}</span>
                 </div>
+                {window.innerWidth <= 768 && (
+                <button className="mobileUnstuckBtn" onClick={unStuckThePuck}><FontAwesomeIcon icon={faArrowsRotate} className="mobileUnstuckBtnIcon"/></button>
+                )}
+                {window.innerWidth <= 768 && (
+                    <Link to='/' className="mobileHomeBtn"><FontAwesomeIcon icon={faHouse} className="mobileHomeBtnIcon"/></Link>
+                )}
             </div>
             {(playerScored || computerScored) && (
               <div className="goalTxtWrapper">
